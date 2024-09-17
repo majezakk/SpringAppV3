@@ -1,63 +1,114 @@
-<!-- orders/form.html -->
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Форма заказа</title>
+    <title th:text="${order.id == null ? 'Создание заказа' : 'Редактирование заказа'}"></title>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/orders/orders.css">
 </head>
 <body>
 <header>
+    <h1 th:text="${order.id == null ? 'Создание нового заказа' : 'Редактирование заказа'}"></h1>
     <nav>
-        <a href="/orders" class="btn btn-primary">Вернуться к списку заказов</a>
+        <a href="/orders" class="btn btn-primary">К списку заказов</a>
     </nav>
 </header>
 <main>
-    <h2 th:text="${order.id == null ? 'Создание заказа' : 'Редактирование заказа'}"></h2>
     <form th:action="@{${order.id == null ? '/orders/create' : '/orders/edit/' + order.id}}" th:object="${order}" method="post">
         <input type="hidden" th:field="*{id}" />
+
         <div class="form-group">
             <label for="customer">Клиент:</label>
-            <select id="customer" th:field="*{customer}" required>
+            <select id="customer" th:field="*{customer.id}" required>
                 <option value="">Выберите клиента</option>
-                <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name}"></option>
+                <option th:each="customer : ${customers}"
+                        th:value="${customer.id}"
+                        th:text="${customer.name}"
+                        th:selected="${order.customer != null and order.customer.id == customer.id}">
+                </option>
             </select>
             <span class="error" th:if="${#fields.hasErrors('customer')}" th:errors="*{customer}"></span>
         </div>
+
         <div class="form-group">
             <label for="creationDate">Дата создания:</label>
             <input type="datetime-local" id="creationDate" th:field="*{creationDate}" required>
             <span class="error" th:if="${#fields.hasErrors('creationDate')}" th:errors="*{creationDate}"></span>
         </div>
+
         <div class="form-group">
-            <label for="status">Статус:</label>
+            <label for="status">Статус заказа:</label>
             <select id="status" th:field="*{status}" required>
                 <option th:each="status : ${T(com.example.SpringAppV3.model.OrderModel.OrderStatus).values()}"
-                        th:value="${status}" th:text="${status}"></option>
+                        th:value="${status}"
+                        th:text="${status}">
+                </option>
             </select>
             <span class="error" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></span>
         </div>
+
         <div class="form-group">
             <label>Товары:</label>
             <div class="product-list">
-                <div th:each="product, itemStat : ${products}" class="product-item">
-                    <input type="checkbox" th:id="${'product-' + product.id}" th:name="'selectedProducts'" th:value="${product.id}">
+                <div th:each="product : ${products}" class="product-item">
+                    <input type="checkbox" th:id="${'product-' + product.id}"
+                           th:value="${product.id}"
+                           th:attr="data-price=${product.price}"
+                           class="product-checkbox"
+                           th:checked="${order.products != null and order.products.contains(product)}">
                     <label th:for="${'product-' + product.id}" th:text="${product.name + ' - ' + product.price + ' ₽'}"></label>
-                    <input type="number" th:name="'productQuantities[' + ${itemStat.index} + ']'" placeholder="Кол-во" min="0" value="0">
+                    <input type="number" th:id="${'quantity-' + product.id}"
+                           th:name="'productQuantities[' + ${product.id} + ']'"
+                           class="product-quantity"
+                           placeholder="Кол-во"
+                           min="0"
+                           th:value="${productQuantities != null ? productQuantities[product.id] : 0}">
                 </div>
             </div>
             <span class="error" th:if="${#fields.hasErrors('products')}" th:errors="*{products}"></span>
         </div>
+
         <div class="form-group">
-            <label for="totalAmount">Общая сумма:</label>
+            <label for="totalAmount">Общая сумма заказа:</label>
             <input type="number" id="totalAmount" th:field="*{totalAmount}" step="0.01" readonly>
             <span class="error" th:if="${#fields.hasErrors('totalAmount')}" th:errors="*{totalAmount}"></span>
         </div>
+
         <button type="submit" class="btn btn-primary">Сохранить</button>
         <a href="/orders" class="btn btn-secondary">Отмена</a>
     </form>
 </main>
+
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        const productCheckboxes = document.querySelectorAll('.product-checkbox');
+        const productQuantities = document.querySelectorAll('.product-quantity');
+        const totalAmountInput = document.getElementById('totalAmount');
+
+        function updateTotalAmount() {
+            let total = 0;
+            productCheckboxes.forEach((checkbox, index) => {
+                if (checkbox.checked) {
+                    const price = parseFloat(checkbox.getAttribute('data-price'));
+                    const quantity = parseInt(productQuantities[index].value) || 0;
+                    total += price * quantity;
+                }
+            });
+            totalAmountInput.value = total.toFixed(2);
+        }
+
+        productCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateTotalAmount);
+        });
+
+        productQuantities.forEach(quantity => {
+            quantity.addEventListener('input', updateTotalAmount);
+        });
+
+        // Инициализация при загрузке страницы
+        updateTotalAmount();
+    });
+</script>
 </body>
 </html>

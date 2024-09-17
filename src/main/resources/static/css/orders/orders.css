@@ -1,17 +1,10 @@
 /* orders/orders.css */
 
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
+/* Стили для заголовка */
 header {
     background-color: #2F2A35;
     color: white;
-    padding: 1rem;
+    padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -21,26 +14,26 @@ header h1 {
     margin: 0;
 }
 
-main {
-    padding: 2rem;
-    max-width: 100%;
-    margin: 0 auto;
+header .btn {
+    margin: 0;
 }
 
-/* Обновленные стили для таблицы */
+/* Стили для основного контента */
+main {
+    padding: 20px;
+}
+
+/* Стили для таблицы */
 table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    margin-top: 1rem;
+    border-collapse: collapse;
+    margin-top: 20px;
     background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
 th, td {
-    padding: 1rem;
+    padding: 12px;
     text-align: left;
     border-bottom: 1px solid #e0e0e0;
 }
@@ -49,27 +42,18 @@ th {
     background-color: #f5f5f5;
     font-weight: bold;
     color: #333;
-    text-transform: uppercase;
-    font-size: 0.9rem;
 }
 
-tr:last-child td {
-    border-bottom: none;
-}
-
-tr:hover {
-    background-color: #f9f9f9;
-}
-
+/* Стили для кнопок */
 .btn {
     display: inline-block;
-    padding: 0.5rem 1rem;
-    margin: 0.2rem;
+    padding: 10px 15px;
+    margin: 5px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 14px;
     transition: background-color 0.3s, transform 0.1s;
 }
 
@@ -113,72 +97,78 @@ tr:hover {
     background-color: #c0392b;
 }
 
-.status-new { color: #3498db; }
-.status-processing { color: #f39c12; }
-.status-shipped { color: #2ecc71; }
-.status-delivered { color: #27ae60; }
-.status-cancelled { color: #e74c3c; }
-
-.order-amount {
-    font-weight: bold;
-    color: #2ecc71;
-}
-
-form {
-    background-color: #fff;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    margin: 0 auto;
-}
-
+/* Стили для формы */
 .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: 5px;
     font-weight: bold;
     color: #333;
 }
 
 input[type="text"],
 input[type="number"],
-select,
-textarea {
+input[type="datetime-local"],
+textarea,
+select {
     width: 100%;
-    padding: 0.5rem;
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    font-size: 1rem;
+    font-size: 14px;
     transition: border-color 0.3s;
 }
 
 input[type="text"]:focus,
 input[type="number"]:focus,
-select:focus,
-textarea:focus {
+input[type="datetime-local"]:focus,
+textarea:focus,
+select:focus {
     border-color: #3498db;
     outline: none;
-    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
 .error {
     color: #e74c3c;
-    font-size: 0.8rem;
-    margin-top: 0.25rem;
+    font-size: 12px;
+    margin-top: 5px;
 }
 
-.product-checkbox {
-    margin-bottom: 0.5rem;
+/* Стили для статусов заказа */
+.status-new { color: #3498db; }
+.status-processing { color: #f39c12; }
+.status-shipped { color: #2ecc71; }
+.status-delivered { color: #27ae60; }
+.status-cancelled { color: #e74c3c; }
+
+/* Стили для суммы заказа */
+.order-amount {
+    font-weight: bold;
+    color: #2ecc71;
 }
 
-.product-checkbox input[type="checkbox"] {
-    margin-right: 0.5rem;
+/* Стили для списка товаров в форме */
+.product-list {
+    margin-top: 10px;
 }
 
+.product-item {
+    margin-bottom: 10px;
+}
+
+.product-item input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.product-item input[type="number"] {
+    width: 60px;
+    margin-left: 10px;
+}
+
+/* Адаптивные стили */
 @media (max-width: 768px) {
     header {
         flex-direction: column;
@@ -186,7 +176,7 @@ textarea:focus {
     }
 
     header .btn {
-        margin-top: 1rem;
+        margin-top: 10px;
     }
 
     table, thead, tbody, th, td, tr {
@@ -200,10 +190,8 @@ textarea:focus {
     }
 
     tr {
-        margin-bottom: 1rem;
+        margin-bottom: 15px;
         border: 1px solid #ccc;
-        border-radius: 8px;
-        overflow: hidden;
     }
 
     td {
@@ -220,11 +208,5 @@ textarea:focus {
         padding-right: 10px;
         white-space: nowrap;
         font-weight: bold;
-    }
-
-    .btn {
-        display: block;
-        width: 100%;
-        margin-bottom: 0.5rem;
     }
 }

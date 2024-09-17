@@ -3,48 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Форма товара</title>
+    <title th:text="${product.id == null ? 'Создание товара' : 'Редактирование товара'}"></title>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/products/products.css">
 </head>
 <body>
 <header>
+    <h1 th:text="${product.id == null ? 'Создание нового товара' : 'Редактирование товара'}"></h1>
     <nav>
-        <a href="/" class="btn btn-primary">Вернуться на главную</a>
+        <a href="/products" class="btn btn-primary">К списку товаров</a>
     </nav>
 </header>
 <main>
-    <h2 th:text="${product.id == null ? 'Создание товара' : 'Редактирование товара'}"></h2>
     <form th:action="@{${product.id == null ? '/products/create' : '/products/edit/' + product.id}}" th:object="${product}" method="post">
         <input type="hidden" th:field="*{id}" />
+
         <div class="form-group">
-            <label for="name">Название:</label>
+            <label for="name">Название товара:</label>
             <input type="text" id="name" th:field="*{name}" required>
             <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
         </div>
+
         <div class="form-group">
             <label for="description">Описание:</label>
             <textarea id="description" th:field="*{description}"></textarea>
             <span class="error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
         </div>
+
         <div class="form-group">
             <label for="category">Категория:</label>
-            <select id="category" th:field="*{category}" required>
+            <select id="category" th:field="*{category.id}" required>
                 <option value="">Выберите категорию</option>
-                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                <option th:each="cat : ${categories}"
+                        th:value="${cat.id}"
+                        th:text="${cat.name}">
+                </option>
             </select>
             <span class="error" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></span>
         </div>
+
         <div class="form-group">
-            <label for="price">Цена:</label>
+            <label for="barcode">Штрих-код:</label>
+            <input type="text" id="barcode" th:field="*{barcode}" required>
+            <span class="error" th:if="${#fields.hasErrors('barcode')}" th:errors="*{barcode}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="weight">Вес (кг):</label>
+            <input type="number" id="weight" th:field="*{weight}" step="0.01" required>
+            <span class="error" th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="volume">Объем (м³):</label>
+            <input type="number" id="volume" th:field="*{volume}" step="0.001" required>
+            <span class="error" th:if="${#fields.hasErrors('volume')}" th:errors="*{volume}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Цена (₽):</label>
             <input type="number" id="price" th:field="*{price}" step="0.01" required>
             <span class="error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
         </div>
+
         <div class="form-group">
             <label for="stockQuantity">Количество на складе:</label>
             <input type="number" id="stockQuantity" th:field="*{stockQuantity}" required>
             <span class="error" th:if="${#fields.hasErrors('stockQuantity')}" th:errors="*{stockQuantity}"></span>
         </div>
+
         <button type="submit" class="btn btn-primary">Сохранить</button>
         <a href="/products" class="btn btn-secondary">Отмена</a>
     </form>

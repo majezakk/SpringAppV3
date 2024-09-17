@@ -10,19 +10,18 @@ import java.util.Set;
 @Entity
 @Table(name = "orders")
 public class OrderModel {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Дата создания заказа не может быть пустой")
+    @NotNull(message = "Дата создания не может быть пустой")
     private LocalDateTime creationDate;
 
     @NotNull(message = "Статус заказа не может быть пустым")
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @PositiveOrZero(message = "Общая сумма не может быть отрицательной")
+    @PositiveOrZero(message = "Общая сумма должна быть неотрицательной")
     private Double totalAmount;
 
     @ManyToOne
@@ -39,6 +38,6 @@ public class OrderModel {
 
     // Enum для статуса заказа
     public enum OrderStatus {
-        СОЗДАН, ОБРАБАТЫВАЕТСЯ, ОТПРАВЛЕН, ДОСТАВЛЕН, ОТМЕНЕН
+        НОВЫЙ, ОБРАБОТКА, ОТПРАВЛЕН, ДОСТАВЛЕН, ОТМЕНЕН
     }
 }

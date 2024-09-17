@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-
     private final OrderRepository orderRepository;
 
     @Autowired
@@ -30,6 +29,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderModel saveOrder(OrderModel order) {
+        // Здесь можно добавить дополнительную логику, если необходимо
         return orderRepository.save(order);
     }
 
