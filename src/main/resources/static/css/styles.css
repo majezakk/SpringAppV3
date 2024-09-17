@@ -1,0 +1,98 @@
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Стили для шапки */
+header {
+    background-color: #3498db;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+/* Стили для основного содержимого */
+main {
+    flex-grow: 1;
+    padding: 2rem;
+}
+
+.content-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.intro {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.intro h2 {
+    color: #333;
+}
+
+/* Стили для контейнера кнопок */
+.button-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+/* Стили для кнопок меню */
+.menu-button {
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-button:hover {
+    background-color: #2980b9;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Нумерация кнопок */
+.menu-button::before {
+    content: attr(data-number);
+    font-weight: bold;
+    margin-right: 0.5rem;
+    background-color: white;
+    color: #3498db;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .button-container {
+        grid-template-columns: 1fr;
+    }
+}
