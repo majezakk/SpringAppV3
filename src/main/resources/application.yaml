@@ -3,7 +3,7 @@ spring:
     name: SpringAppV3
   datasource:
     url: jdbc:postgresql://localhost:5432/V3_db
-    username: root
+    username: postgres
     password: 123
     driver-class-name: org.postgresql.Driver
   jpa:
